@@ -5,9 +5,9 @@ from jose import jwt
 from urllib.request import urlopen
 
 
-AUTH0_DOMAIN = 'udacity-fsnd.auth0.com'
+AUTH0_DOMAIN = 'fsnd-shaun.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'dev'
+API_AUDIENCE = 'coffee-shop-identifier'
 
 ## AuthError Exception
 '''
@@ -31,7 +31,17 @@ class AuthError(Exception):
     return the token part of the header
 '''
 def get_token_auth_header():
-   raise Exception('Not Implemented')
+    if "Authorization" in request.headers:
+        auth_header = request.headers["Authorization"]
+        if auth_header:
+            bearer_token_array = auth_header.split(' ')
+            if bearer_token_array[0] and bearer_token_array[0].lower() == "bearer" and bearer_token_array[1]:
+                return bearer_token_array[1]
+    raise AuthError({
+        'success': False,
+        'message': 'JWT not found',
+        'error': 401
+    }, 401)
 
 '''
 @TODO implement check_permissions(permission, payload) method
@@ -45,7 +55,14 @@ def get_token_auth_header():
     return true otherwise
 '''
 def check_permissions(permission, payload):
-    raise Exception('Not Implemented')
+    if "permissions" in payload:
+        if permission in payload['permissions']:
+            return True
+    raise AuthError({
+        'success': False,
+        'message': 'Permission not found in JWT',
+        'error': 401
+    }, 401)
 
 '''
 @TODO implement verify_decode_jwt(token) method
