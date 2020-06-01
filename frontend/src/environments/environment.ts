@@ -9,6 +9,6 @@ export const environment = {
     url: 'fsnd-shaun.auth0.com', // the auth0 domain prefix
     audience: 'coffee-shop-identifier', // the audience set for the auth0 app
     clientId: 'elz0ADtN0AmAvr4oThn8WH908H0EYu7H', // the client id generated for the auth0 app
-    callbackURL: 'http://localhost:8100', // the base url of the running ionic application. 
+    callbackURL: 'https://localhost:8100', // the base url of the running ionic application. 
   }
 };

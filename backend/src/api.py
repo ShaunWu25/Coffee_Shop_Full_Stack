@@ -29,12 +29,12 @@ db_drop_and_create_all()
 '''
 @app.route("/drinks")
 def get_drinks():
-    drinks = list(map(Drink.short, Drink.query.all()))
-    result = {
-        "success": True,
-        "drinks": drinks
-    }
-    return jsonify(result)
+    drinks = Drink.query.all()
+
+    return jsonify({
+        'success': True,
+        'drinks': [drink.short() for drink in drinks]
+    }), 200
 
 '''
 @TODO implement endpoint
@@ -172,3 +172,11 @@ def not_found(error):
 @app.errorhandler(AuthError)
 def auth_error(e):
     return jsonify(e.error), e.status_code
+
+@app.errorhandler(400)
+def bad_request(error):
+    return jsonify({
+        "success": False,
+        "error": 400,
+        "message": 'Bad Request'
+    }), 400
